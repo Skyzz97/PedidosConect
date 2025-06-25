@@ -1,6 +1,9 @@
 <?php
 
-ob_clean();
+if (ob_get_level()) {
+    ob_clean();
+}
+
 require('tfpdf/tfpdf.php');
 
 $dados = json_decode($_POST['json'], true);
