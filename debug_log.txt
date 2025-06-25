@@ -1,0 +1,4 @@
+Array
+(
+    [json] => {"cliente":{"nome":"Luiz Felipe da Silva Lovatti","endereco":"Av. João Pedro Lauvers","cidade":"Santa Maria de Jetibá","uf":"ES","cnpj":"16413289759","inscEstadual":"","comprador":"Felipe"},"itens":[{"pid":"2","nome":"Conect Ultra Max","preco":65,"qtd":1,"total":65}],"observacoes":""}
+)

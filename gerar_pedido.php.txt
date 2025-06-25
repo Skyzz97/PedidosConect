@@ -1,0 +1,171 @@
+<?php
+header('Content-Type: application/json; charset=UTF-8');
+ob_clean();
+require('fpdf/fpdf.php');
+
+$dados = json_decode($_POST['json'], true);
+if (!$dados || !isset($dados['cliente']) || !isset($dados['itens'])) {
+    http_response_code(400);
+    echo "Dados inválidos.";
+    exit;
+}
+
+$c = $dados['cliente'];
+$itens = $dados['itens'];
+$obs = $dados['observacoes'] ?? '';
+$pagamento = $dados['condicoes'] ?? '';
+$frete_tipo = $dados['frete'] ?? 'CIF';
+$transportadora = $dados['transportadora'] ?? '';
+$pedidoNum = $dados['numero'] ?? 'N/A';
+$dataPedido = date('d/m/Y');
+
+$pdf = new FPDF('P', 'mm', 'A4');
+$pdf->AddPage();
+$pdf->SetMargins(10, 10, 10);
+$pdf->SetAutoPageBreak(true, 10);
+$pdf->SetFont('Arial', '', 9);
+
+// Logo
+$pdf->Image('logo.png', 10, 10, 40);
+
+// Cabeçalho do pedido
+$pdf->SetFont('Arial', '', 10);
+$pdf->SetXY(150, 12);
+$pdf->Cell(50, 6, utf8_decode("PEDIDO"), 0, 2, 'C');
+$pdf->SetFont('Arial', 'B', 14);
+$pdf->SetTextColor(200, 0, 0);
+$pdf->Cell(50, 6, utf8_decode($pedidoNum), 0, 2, 'C');
+$pdf->SetTextColor(0);
+$pdf->SetFont('Arial', '', 9);
+$pdf->Cell(50, 6, utf8_decode("Data da emissão"), 0, 2, 'C');
+$pdf->Cell(50, 6, $dataPedido, 0, 2, 'C');
+
+$pdf->Ln(30);
+
+// Dados do cliente
+$pdf->SetFont('Arial', '', 9);
+$pdf->Cell(25, 6, 'NOME:', 0, 0);
+$pdf->SetFont('Arial', 'B', 9);
+$pdf->Cell(0, 6, utf8_decode($c['nome']), 0, 1);
+
+$pdf->SetFont('Arial', '', 9);
+$pdf->Cell(25, 6, 'ENDEREÇO:', 0, 0);
+$pdf->SetFont('Arial', '', 9);
+$pdf->Cell(80, 6, utf8_decode($c['endereco']), 0, 0);
+$pdf->Cell(15, 6, 'UF:', 0, 0);
+$pdf->SetFont('Arial', 'B', 9);
+$pdf->Cell(10, 6, $c['uf'], 0, 0);
+$pdf->SetFont('Arial', '', 9);
+$pdf->Cell(10, 6, 'CEP:', 0, 0);
+$pdf->Cell(0, 6, $c['cep'], 0, 1);
+
+$pdf->Cell(25, 6, 'CIDADE:', 0, 0);
+$pdf->SetFont('Arial', 'B', 9);
+$pdf->Cell(50, 6, utf8_decode($c['cidade']), 0, 0);
+$pdf->SetFont('Arial', '', 9);
+$pdf->Cell(15, 6, 'FONE:', 0, 0);
+$pdf->Cell(50, 6, $c['telefone'], 0, 1);
+
+$pdf->Cell(25, 6, 'CNPJ:', 0, 0);
+$pdf->Cell(50, 6, $c['cnpj'], 0, 0);
+$pdf->Cell(25, 6, 'INSC.EST.:', 0, 0);
+$pdf->Cell(50, 6, $c['inscEstadual'], 0, 0);
+$pdf->Cell(20, 6, 'COMPRADOR:', 0, 0);
+$pdf->Cell(0, 6, utf8_decode($c['comprador']), 0, 1);
+
+$pdf->Ln(2);
+$pdf->Cell(0, 0, '', 'T');
+$pdf->Ln(2);
+
+// Endereço de cobrança
+$pdf->SetFont('Arial', '', 9);
+$pdf->Cell(30, 6, 'END. DE COBRANÇA:', 0, 0);
+$pdf->Cell(80, 6, '', 0, 0);
+$pdf->Cell(10, 6, 'UF:', 0, 0);
+$pdf->Cell(10, 6, '', 0, 0);
+$pdf->Cell(10, 6, 'CEP:', 0, 0);
+$pdf->Cell(0, 6, '', 0, 1);
+$pdf->Cell(20, 6, 'CIDADE:', 0, 0);
+$pdf->Cell(50, 6, '', 0, 0);
+$pdf->Cell(20, 6, 'CONTATO:', 0, 0);
+$pdf->Cell(0, 6, '', 0, 1);
+
+$pdf->Ln(2);
+$pdf->Cell(0, 0, '', 'T');
+$pdf->Ln(4);
+
+// Tabela de produtos
+$pdf->SetFont('Arial', 'B', 9);
+$pdf->SetFillColor(220);
+$pdf->Cell(20, 7, 'QUANT.', 1, 0, 'C', true);
+$pdf->Cell(15, 7, 'UNID.', 1, 0, 'C', true);
+$pdf->Cell(85, 7, 'PRODUTO', 1, 0, 'C', true);
+$pdf->Cell(35, 7, 'VALOR UNITARIO', 1, 0, 'C', true);
+$pdf->Cell(35, 7, 'VALOR TOTAL', 1, 1, 'C', true);
+
+$pdf->SetFont('Arial', '', 9);
+$totalGeral = 0;
+$maxLinhas = 15;
+$linhasUsadas = 0;
+
+foreach ($itens as $item) {
+    $total = $item['preco'] * $item['qtd'];
+    $totalGeral += $total;
+    $pdf->Cell(20, 7, $item['qtd'], 1, 0, 'C');
+    $pdf->Cell(15, 7, $item['unidade'] ?? 'Lt', 1, 0, 'C');
+    $pdf->Cell(85, 7, utf8_decode($item['nome']), 1, 0, 'L');
+    $pdf->Cell(35, 7, number_format($item['preco'], 2, ',', '.'), 1, 0, 'R');
+    $pdf->Cell(35, 7, number_format($total, 2, ',', '.'), 1, 1, 'R');
+    $linhasUsadas++;
+}
+
+// Linhas restantes em branco
+for ($i = $linhasUsadas; $i < $maxLinhas; $i++) {
+    $pdf->Cell(20, 7, '', 1);
+    $pdf->Cell(15, 7, '', 1);
+    $pdf->Cell(85, 7, '', 1);
+    $pdf->Cell(35, 7, '', 1);
+    $pdf->Cell(35, 7, '', 1, 1);
+}
+
+// Total
+$pdf->SetFont('Arial', 'B', 9);
+$pdf->Cell(155, 7, 'TOTAL', 1, 0, 'R');
+$pdf->Cell(35, 7, number_format($totalGeral, 2, ',', '.'), 1, 1, 'R');
+
+$pdf->Ln(5);
+
+// Observações
+$pdf->SetFont('Arial', '', 9);
+$pdf->Cell(10, 6, 'OBS.:');
+$pdf->MultiCell(0, 6, utf8_decode($obs));
+
+$pdf->Ln(5);
+
+// Rodapé
+$pdf->Cell(30, 6, 'TRANSPORTADORA:', 0, 0);
+$pdf->Cell(80, 6, utf8_decode($transportadora), 0, 0);
+$pdf->Cell(40, 6, 'FRETE:');
+$pdf->Cell(10, 6, $frete_tipo == 'CIF' ? '(x)' : '( )');
+$pdf->Cell(10, 6, 'CIF');
+$pdf->Cell(10, 6, $frete_tipo == 'FOB' ? '(x)' : '( )');
+$pdf->Cell(10, 6, 'FOB');
+
+$pdf->Ln(7);
+$pdf->Cell(50, 6, 'CONDIÇOES DE PAGAMENTO:', 0, 0);
+$pdf->SetTextColor(255, 0, 0);
+$pdf->Cell(50, 6, utf8_decode($pagamento));
+$pdf->SetTextColor(0);
+
+$pdf->Ln(15);
+
+// Assinaturas
+$pdf->SetFont('Arial', '', 9);
+$pdf->Cell(95, 6, '_________________________________', 0, 0, 'C');
+$pdf->Cell(95, 6, '_________________________________', 0, 1, 'C');
+$pdf->Cell(95, 6, utf8_decode($c['vendedor'] ?? 'ASSINATURA DO VENDEDOR'), 0, 0, 'C');
+$pdf->Cell(95, 6, utf8_decode($c['comprador'] ?? 'ASSINATURA DO CLIENTE'), 0, 1, 'C');
+
+// Output
+$pdf->Output('I', 'Pedido_' . preg_replace('/[^a-zA-Z0-9]/', '_', $c['nome']) . '.pdf');
+?>

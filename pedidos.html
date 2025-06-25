@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Emissão de Pedido</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'Montserrat', sans-serif; background-color: #4999F6; color: #fff; margin: 0; padding: 0; }
+    .navbar { background-color: #07417d; padding: 1rem 1rem; border-bottom: 0.2px solid #333; }
+    .navbar-brand { font-size: 1.5rem; font-weight: bold; color: #fff !important; text-decoration: none !important; }
+    .sidebar { height: 100%; width: 250px; position: fixed; top: 0; left: -250px; background-color: #051A32; transition: 0.5s; padding-top: 60px; z-index:1000; }
+    .sidebar a { padding:10px 15px; text-decoration:none; color:#fff; display:block; }
+    .sidebar a:hover { background-color:#333; }
+    .sidebar .closebtn { position:absolute; top:0; right:25px; font-size:2rem; }
+    .menu-icon { position:fixed; top:20px; left:20px; font-size:2rem; color:#fff; cursor:pointer; z-index:1001; }
+    .form-container { max-width:900px;  margin: 1rem auto; padding: 1rem 2rem; background-color:#16375D; border-radius:10px; }
+    label { color:#ccc; }
+    .btn-primary { background-color:#2C72B7; border:none; }
+    .btn-primary:hover { background-color:#1b4f83; }
+	.btn-back:hover { background-color:#1b4f83; }
+    .modal-content { background-color:#16375D; color:#fff; }
+    .cliente-item { cursor:pointer; padding:8px; border-bottom:1px solid #ccc; }
+    .cliente-item:hover { background-color:#2C72B7; }
+	
+	.form-group,
+[class*="mb-"] {
+  margin-bottom: 0.25rem !important;
+}
+.etapa {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+.etapa.ativa {
+  opacity: 1;
+  pointer-events: auto;
+  position: relative;
+}
+
+label {
+  font-size: 0.8rem;
+  margin-bottom: 0rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+  border-radius: 0.375rem;
+  cursor: pointer;
+}
+.form-control, textarea {
+  padding: 0.3rem 0.5rem;
+  font-size: 0.85rem;
+  line-height: 1.2;
+}
+
+.btn-back {
+margin-top: 20px;
+  margin-left: 0px;
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  background-color: #fff; /* verde */
+  color: #000000;               /* texto branco */
+  border: none;
+  }
+  .btn-backs {
+margin-top: 20px;
+  margin-left: 20px;
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  background-color: #fff; /* verde */
+  color: #000000;               /* texto branco */
+  border: none;
+  }
+  
+.btn-primary {
+  margin-top: 20px;
+  margin-left: 0px;
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  background-color: #28a745; /* verde */
+  color: #fff;               /* texto branco */
+  border: none;
+}
+
+#formPedido {
+  position: relative;
+  min-height: 200px; /* altura mínima para evitar "pulo" visual */
+  overflow: hidden;
+}
+
+    table th, table td { color:#fff; }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.html">
+        <img src="images/logo.png" alt="Logo" style="width:110px;"/> Emissão de Pedido
+      </a>
+    </div>
+  </nav>
+
+  <div id="sidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="fecharMenu()">&times;</a>
+    <a href="index.html"><i class="bi bi-house"></i> Página Inicial</a>
+    <a href="sobre.html"><i class="bi bi-info-circle"></i> Sobre</a>
+  </div>
+  <div class="menu-icon" onclick="abrirMenu()"><i class="bi bi-list"></i></div>
+ 
+  <button type="button" id="voltar" class="btn-backs" onclick="window.location.href='index.html'">Voltar</button>
+
+
+
+
+  </div>
+  <div class="form-container">
+    <h2 class="mb-4">Novo Pedido</h2> 
+	
+   <form id="formPedido">
+  <!-- Etapa 1 - Cliente -->
+  <div class="etapa" id="etapa1">
+    <label>Cliente</label>
+        <div class="d-flex">
+          <input type="text" id="clienteNome" class="form-control me-2" placeholder="Nenhum cliente selecionado" disabled>
+          <input type="hidden" id="clienteId">
+          <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modalClientes">Selecionar</button>
+        </div>
+     
+    
+
+    <div class="mb-3"><label>Endereço</label><input type="text" id="enderecoCliente" class="form-control" disabled></div>
+    <div class="row">
+      <div class="col-md-6 mb-3"><label>Cidade</label><input type="text" id="cidadeCliente" class="form-control" disabled></div>
+      <div class="col-md-2 mb-3"><label>UF</label><input type="text" id="ufCliente" class="form-control" disabled></div>
+      <div class="col-md-4 mb-3"><label>CEP</label><input type="text" id="cepCliente" class="form-control" disabled></div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 mb-3"><label>Telefone</label><input type="text" id="telefoneCliente" class="form-control" disabled></div>
+      <div class="col-md-6 mb-3"><label>Email</label><input type="email" id="emailCliente" class="form-control" disabled></div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 mb-3"><label>CNPJ</label><input type="text" id="cnpjCliente" class="form-control" disabled></div>
+      <div class="col-md-6 mb-3"><label>Inscrição Estadual</label><input type="text" id="inscEstadualCliente" class="form-control" disabled></div>
+    </div>
+    <div class="mb-3"><label>Comprador</label><input type="text" id="compradorCliente" class="form-control" disabled></div>
+
+    <hr class="border-light">
+    <h5>Endereço de Cobrança</h5>
+    <div class="mb-3"><label>Endereço</label><input type="text" id="endCobranca" class="form-control" disabled></div>
+    <div class="row">
+      <div class="col-md-6 mb-3"><label>Cidade</label><input type="text" id="cidadeCobranca" class="form-control" disabled></div>
+      <div class="col-md-2 mb-3"><label>UF</label><input type="text" id="ufCobranca" class="form-control" disabled></div>
+      <div class="col-md-4 mb-3"><label>CEP</label><input type="text" id="cepCobranca" class="form-control" disabled></div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 mb-3"><label>Telefone</label><input type="text" id="telefoneCobranca" class="form-control" disabled></div>
+      <div class="col-md-6 mb-3"><label>Contato</label><input type="text" id="contatoCobranca" class="form-control" disabled></div>
+    </div>
+  </div>
+
+
+     <div class="etapa" id="etapa2">
+    <h5>Itens do Pedido</h5>
+    <div class="row g-3 align-items-end">
+      <div class="col-md-4">
+        <label>Produto</label>
+        <div class="d-flex">
+          <input type="text" id="produtoNome" class="form-control me-2" placeholder="Nenhum produto" disabled>
+          <input type="hidden" id="produtoId">
+		  <input type="hidden" id="produtoCodigo">
+
+          <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modalProdutos">Selecionar</button>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <label for="preco">Preço (R$)</label>
+        <input type="number" step="0.01" class="form-control" id="preco">
+      </div>
+      <div class="col-md-2">
+        <label for="quantidade">Qtd.</label>
+        <input type="number" class="form-control" id="quantidade">
+      </div>
+      <div class="col-md-3">
+        <label>&nbsp;</label>
+        <button type="button" id="btnAddItem" class="btn btn-primary w-100">Adicionar Item</button>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <table class="table table-striped table-dark">
+        <thead><tr><th>Código</th><th>Produto</th><th>Preço</th><th>Qtd.</th><th>Total</th><th></th></tr></thead>
+
+        <tbody id="itensLista"></tbody>
+      </table>
+    </div>
+    <div class="text-end mb-3"><strong>Total Geral: R$ <span id="totalGeral">0.00</span></strong></div>
+    <div class="mb-3">
+      <label for="observacoes">Observações</label>
+      <textarea class="form-control" id="observacoes" rows="3"></textarea>
+    </div>
+  </div>
+
+
+<!-- Etapa 3 - Dados finais -->
+  <div class="etapa" id="etapa3">
+    <div class="row mb-3">
+      <div class="col-md-6"><label for="numeroPedido">Número do Pedido</label><input type="text" id="numeroPedido" class="form-control" value="16"></div>
+      <div class="col-md-6"><label for="transportadora">Transportadora</label><input type="text" id="transportadora" class="form-control" placeholder="Nome da transportadora"></div>
+    </div>
+    <div class="mb-3">
+      <label>Frete</label><br/>
+      <div class="form-check form-check-inline text-white">
+        <input class="form-check-input" type="radio" name="freteOpcao" id="freteCIF" value="CIF" checked>
+        <label class="form-check-label" for="freteCIF">CIF</label>
+      </div>
+      <div class="form-check form-check-inline text-white">
+        <input class="form-check-input" type="radio" name="freteOpcao" id="freteFOB" value="FOB">
+        <label class="form-check-label" for="freteFOB">FOB</label>
+      </div>
+    </div>
+    <div class="mb-3">
+  <label class="form-label">Prazo</label>
+  <select class="form-select" id="prazoOpcao" onchange="verificaOutroPrazo()">
+    <option value="À vista">À vista</option>
+    <option value="30 dias">30 dias</option>
+    <option value="60 dias">60 dias</option>
+    <option value="90 dias">90 dias</option>
+    <option value="120 dias">120 dias</option>
+    <option value="30/60 dias">30/60 dias</option>
+    <option value="60/90 dias">60/90 dias</option>
+    <option value="90/120 dias">90/120 dias</option>
+    <option value="outro">Outro</option>
+  </select>
+  <input type="text" class="form-control mt-2 d-none" id="prazoOutro" placeholder="Digite o prazo personalizado">
+</div>
+
+	<button type="submit" class="btn btn-primary w-100 mt-3">Emitir Pedido</button>
+  </div>
+
+ <!-- Botões de navegação -->
+  <div class="d-flex justify-content-between mt-4">
+    <button type="button" class="btn btn-back" id="btnAnterior">Anterior</button>
+    <button type="button" class="btn btn-primary" id="btnProxima">Próxima</button>
+  </div>
+  
+</form>
+
+  <!-- Modal Clientes -->
+  <div class="modal fade" id="modalClientes" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Selecionar Cliente</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="text" class="form-control" id="filtroCliente" placeholder="Pesquisar cliente...">
+		  <div class="d-flex justify-content-end mb-3">
+  <button id="btnNovoCliente" type="button" style="margin-top:10px;" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalNovoCliente">
+  
+    <i class="bi bi-plus-lg"></i> Novo Cliente
+
+  </button>
+</div>
+          <div id="listaClientes" class="mt-3"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Modal Novo Cliente -->
+<div class="modal fade" id="modalNovoCliente" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-4">
+      <div class="modal-header">
+        <h5 class="modal-title">Cadastrar Novo Cliente</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="formNovoCliente">
+        <div class="mb-3">
+          <label class="form-label">Nome</label>
+          <input type="text" id="nc_nome" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Endereço</label>
+          <input type="text" id="nc_endereco" class="form-control">
+        </div>
+        <div class="row g-2 mb-3">
+          <div class="col"><input type="text" id="nc_cidade" class="form-control" placeholder="Cidade"></div>
+          <div class="col-2"><input type="text" id="nc_uf" class="form-control" placeholder="UF"></div>
+          <div class="col-4"><input type="text" id="nc_cep" class="form-control" placeholder="CEP"></div>
+        </div>
+        <div class="row g-2 mb-3">
+          <div class="col"><input type="text" id="nc_telefone" class="form-control" placeholder="Telefone"></div>
+          <div class="col"><input type="email" id="nc_email" class="form-control" placeholder="E-mail"></div>
+        </div>
+        <div class="row g-2 mb-3">
+          <div class="col"><input type="text" id="nc_cnpj" class="form-control" placeholder="CNPJ"></div>
+          <div class="col"><input type="text" id="nc_inscEstadual" class="form-control" placeholder="Inscrição Estadual"></div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Comprador</label>
+          <input type="text" id="nc_comprador" class="form-control">
+        </div>
+        <hr>
+        <h6>Endereço de Cobrança</h6>
+        <div class="mb-3"><input type="text" id="nc_endCobranca" class="form-control" placeholder="Endereço"></div>
+        <div class="row g-2 mb-3">
+          <div class="col"><input type="text" id="nc_cidadeCobranca" class="form-control" placeholder="Cidade"></div>
+          <div class="col-2"><input type="text" id="nc_ufCobranca" class="form-control" placeholder="UF"></div>
+          <div class="col-4"><input type="text" id="nc_cepCobranca" class="form-control" placeholder="CEP"></div>
+        </div>
+        <div class="row g-2 mb-3">
+          <div class="col"><input type="text" id="nc_telefoneCobranca" class="form-control" placeholder="Telefone"></div>
+          <div class="col"><input type="text" id="nc_contatoCobranca" class="form-control" placeholder="Contato"></div>
+        </div>
+        <button type="submit" class="btn btn-success w-100">Salvar Cliente</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+  <!-- Modal Produtos -->
+  <div class="modal fade" id="modalProdutos" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Selecionar Produto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="text" class="form-control" id="filtroProduto" placeholder="Pesquisar produto...">
+          <div id="listaProdutos" class="mt-3"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+  let etapaAtual = 0;
+const etapas = document.querySelectorAll('.etapa');
+const btnAnterior = document.getElementById('btnAnterior');
+const btnProxima = document.getElementById('btnProxima');
+
+function verificaOutroPrazo() {
+  const select = document.getElementById('prazoOpcao');
+  const outro = document.getElementById('prazoOutro');
+  outro.classList.toggle('d-none', select.value !== 'outro');
+}
+
+
+function mostrarEtapa(index) {
+  etapas.forEach((etapa, i) => {
+    etapa.classList.remove('ativa');
+    if (i === index) etapa.classList.add('ativa');
+  });
+  btnAnterior.style.display = index === 0 ? 'none' : 'inline-block';
+  btnProxima.textContent = index === etapas.length - 1 ? 'Emitir' : 'Próxima';
+}
+
+btnAnterior.addEventListener('click', () => {
+  if (etapaAtual > 0) {
+    etapaAtual--;
+    mostrarEtapa(etapaAtual);
+  }
+});
+
+btnProxima.addEventListener('click', () => {
+  if (etapaAtual < etapas.length - 1) {
+    etapaAtual++;
+    mostrarEtapa(etapaAtual);
+  } else {
+    document.getElementById('formPedido').requestSubmit();
+  }
+});
+
+mostrarEtapa(etapaAtual);
+  
+  
+    let clientes=[], produtos=[], itens=[];
+    function abrirMenu(){document.getElementById('sidebar').style.left='0';}
+    function fecharMenu(){document.getElementById('sidebar').style.left='-250px';}
+
+    async function carregarClientes(){
+      try{ const res=await fetch('clientes.php?acao=ler'); clientes=await res.json(); atualizarListaClientes(); }
+      catch(err){ console.error(err); }
+    }
+   function atualizarListaClientes(filtro = '') {
+  const lista = document.getElementById('listaClientes');
+  lista.innerHTML = '';
+
+  clientes
+    .filter(c => c.nome.toLowerCase().includes(filtro.toLowerCase()))
+    .forEach((c, i) => {
+      const linha = document.createElement('div');
+      linha.className = 'cliente-item d-flex justify-content-between align-items-center';
+
+      const nome = document.createElement('span');
+      nome.textContent = c.nome;
+      nome.style.flex = '1';
+      nome.style.cursor = 'pointer';
+      nome.onclick = () => selecionarCliente(i);
+
+      const botoes = document.createElement('div');
+      botoes.innerHTML = `
+        <button class="btn btn-sm btn-outline-warning me-1" title="Editar" onclick="editarCliente(${i})">
+          <i class="bi bi-pencil"></i>
+        </button>
+        <button class="btn btn-sm btn-outline-danger" title="Excluir" onclick="excluirCliente(${i})">
+          <i class="bi bi-trash"></i>
+        </button>
+      `;
+
+      linha.appendChild(nome);
+      linha.appendChild(botoes);
+      lista.appendChild(linha);
+    });
+}
+
+    document.getElementById('filtroCliente').addEventListener('input',e=>atualizarListaClientes(e.target.value));
+    function selecionarCliente(index){ const cliente=clientes[index]; document.getElementById('clienteNome').value=cliente.nome; document.getElementById('clienteId').value=index; document.getElementById('enderecoCliente').value=cliente.endereco||''; document.getElementById('cidadeCliente').value=cliente.cidade||''; document.getElementById('ufCliente').value=cliente.uf||''; document.getElementById('cepCliente').value=cliente.cep||''; document.getElementById('telefoneCliente').value=cliente.telefone||''; document.getElementById('emailCliente').value=cliente.email||''; document.getElementById('cnpjCliente').value=cliente.cnpj||''; document.getElementById('inscEstadualCliente').value=cliente.inscEstadual||''; document.getElementById('compradorCliente').value=cliente.comprador||''; document.getElementById('endCobranca').value=cliente.endCobranca||''; document.getElementById('cidadeCobranca').value=cliente.cidadeCobranca||''; document.getElementById('ufCobranca').value=cliente.ufCobranca||''; document.getElementById('cepCobranca').value=cliente.cepCobranca||''; document.getElementById('telefoneCobranca').value=cliente.telefoneCobranca||''; document.getElementById('contatoCobranca').value=cliente.contatoCobranca||''; bootstrap.Modal.getInstance(document.getElementById('modalClientes')).hide(); }
+console.log("Chamou carregarProdutos");
+
+    async function carregarProdutos() {
+  try {
+    const res = await fetch('produtos.php');
+    produtos = await res.json();
+    atualizarListaProdutos(); // <- isso precisa estar aqui
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+function calcularMultiplicadorPorPrazo(prazo) {
+  const taxa = 0.02;
+
+  const dias = {
+    "À vista": 0,
+    "30 dias": 30,
+    "60 dias": 60,
+    "90 dias": 90,
+    "120 dias": 120,
+    "30/60 dias": 60,
+    "60/90 dias": 90,
+    "90/120 dias": 120
+  };
+
+  if (prazo === "outro") {
+    const custom = document.getElementById("prazoOutro").value;
+    const diasCustom = parseInt(custom.replace(/\D/g, '')) || 0;
+    return Math.pow(1 + taxa, Math.floor(diasCustom / 30));
+  }
+
+  const diasTotal = dias[prazo] || 0;
+  return Math.pow(1 + taxa, Math.floor(diasTotal / 30));
+}
+
+  function atualizarListaProdutos(filtro='') {
+  const lista = document.getElementById('listaProdutos');
+  lista.innerHTML = '';
+  produtos
+    .filter(p => p.nome.toLowerCase().includes(filtro.toLowerCase()))
+    .forEach((p, i) => {
+      const d = document.createElement('div');
+      d.className = 'cliente-item';
+      d.innerHTML = `<strong>${p.codigo}</strong> - ${p.nome} <br><small>${p.cultura}</small>`;
+      d.onclick = () => selecionarProduto(i);
+      lista.appendChild(d);
+    });
+}
+    document.getElementById('filtroProduto').addEventListener('input',e=>atualizarListaProdutos(e.target.value));
+    function selecionarProduto(index){ const p=produtos[index]; document.getElementById('produtoNome').value = p.nome;
+document.getElementById('produtoId').value = index;
+document.getElementById('produtoCodigo').value = p.codigo || '';
+ const pr=document.getElementById('preco'); if(p.nome.toLowerCase().includes('cálcio')) pr.value='120.00'; else if(p.nome.toLowerCase().includes('boro')) pr.value='98.50'; else if(p.nome.toLowerCase().includes('ultra max')) pr.value='65.00'; else if(p.nome.toLowerCase().includes('clean')) pr.value='59.90'; else pr.value=''; bootstrap.Modal.getInstance(document.getElementById('modalProdutos')).hide(); }
+
+    document.getElementById('btnAddItem').addEventListener('click',()=>{ const pid=document.getElementById('produtoId').value; const nome=document.getElementById('produtoNome').value; const preco=parseFloat(document.getElementById('preco').value); const qtd=parseInt(document.getElementById('quantidade').value); if(!pid||!nome||!preco||!qtd) return alert('Preencha produto, preço e quantidade.'); const codigo = document.getElementById('produtoCodigo').value;
+const prazoSelecionado = document.getElementById("prazoOpcao").value;
+const multiplicador = calcularMultiplicadorPorPrazo(prazoSelecionado);
+const precoFinal = parseFloat((preco * multiplicador).toFixed(2));
+
+const total = precoFinal * qtd;
+itens.push({
+  pid,
+  nome,
+  codigo,
+  preco: precoFinal,
+  precoBase: preco, // salva o original
+  qtd,
+  total
+});
+
+	atualizarTabela(); clearItemFields(); });
+    function clearItemFields(){ document.getElementById('produtoNome').value=''; document.getElementById('produtoId').value=''; document.getElementById('preco').value=''; document.getElementById('quantidade').value=''; }
+    function atualizarTabela(){ const tbody=document.getElementById('itensLista'); tbody.innerHTML=''; let sum=0; itens.forEach((it,i)=>{ sum+=it.total; const tr=document.createElement('tr'); tr.innerHTML = `<td>${it.codigo || ''}</td><td>${it.nome}</td><td>${it.preco.toFixed(2)}</td><td>${it.qtd}</td><td>${it.total.toFixed(2)}</td><td><button type="button" class="btn btn-sm btn-outline-danger">×</button></td>`; tr.querySelector('button').onclick=()=>{ itens.splice(i,1); atualizarTabela(); }; tbody.appendChild(tr); }); document.getElementById('totalGeral').textContent=sum.toFixed(2); }
+
+document.getElementById('formPedido').addEventListener('submit', e => {
+  e.preventDefault();
+
+  if (!document.getElementById('clienteId').value) {
+    return alert('Selecione um cliente.');
+  }
+
+  if (itens.length === 0) {
+    return alert('Adicione ao menos um item.');
+  }
+
+  const prazoSelecionado = document.getElementById("prazoOpcao").value;
+  const prazoFinal = prazoSelecionado === "outro"
+    ? document.getElementById("prazoOutro").value
+    : prazoSelecionado;
+
+  const dados = {
+    numero: document.getElementById("numeroPedido").value,
+    cliente: {
+      nome: document.getElementById("clienteNome").value,
+      endereco: document.getElementById("enderecoCliente").value,
+      cidade: document.getElementById("cidadeCliente").value,
+      uf: document.getElementById("ufCliente").value,
+      cep: document.getElementById("cepCliente").value,
+      telefone: document.getElementById("telefoneCliente").value,
+      email: document.getElementById("emailCliente").value,
+      cnpj: document.getElementById("cnpjCliente").value,
+      inscEstadual: document.getElementById("inscEstadualCliente").value,
+      comprador: document.getElementById("compradorCliente").value,
+      vendedor: document.getElementById("vendedorCliente")?.value || "Roberto Nunes",
+      endCobranca: document.getElementById("endCobranca").value,
+      cidadeCobranca: document.getElementById("cidadeCobranca").value,
+      ufCobranca: document.getElementById("ufCobranca").value,
+      cepCobranca: document.getElementById("cepCobranca").value,
+      telefoneCobranca: document.getElementById("telefoneCobranca").value,
+      contatoCobranca: document.getElementById("contatoCobranca").value
+    },
+    prazoPagamento: prazoFinal, // <-- INCLUÍDO AQUI
+    itens: itens.map(it => ({
+  nome: it.nome,
+  codigo: it.codigo || '', // <-- Adicionado aqui
+  qtd: it.qtd,
+  preco: it.preco,
+  total: it.total,
+  unidade: it.unidade || "lt"
+})),
+
+    observacoes: document.getElementById("observacoes").value,
+    transportadora: document.getElementById("transportadora").value,
+    frete: document.querySelector('input[name="freteOpcao"]:checked').value
+  };
+
+  // salva localmente
+  fetch('salvar_pedido.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(dados)
+  }).then(res => res.json()).then(res => {
+    if (res.status !== 'ok') {
+      alert('Erro ao salvar pedido localmente!');
+    }
+  });
+
+  // abre pdf
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = 'gerar_pedido.php';
+  form.target = '_blank';
+
+  const input = document.createElement('input');
+  input.type = 'hidden';
+  input.name = 'json';
+  input.value = JSON.stringify(dados);
+  form.appendChild(input);
+
+  document.body.appendChild(form);
+  form.submit();
+  form.remove();
+});	
+
+function editarCliente(index) {
+  const c = clientes[index];
+  document.getElementById('nc_nome').value = c.nome || '';
+  document.getElementById('nc_endereco').value = c.endereco || '';
+  document.getElementById('nc_cidade').value = c.cidade || '';
+  document.getElementById('nc_uf').value = c.uf || '';
+  document.getElementById('nc_cep').value = c.cep || '';
+  document.getElementById('nc_telefone').value = c.telefone || '';
+  document.getElementById('nc_email').value = c.email || '';
+  document.getElementById('nc_cnpj').value = c.cnpj || '';
+  document.getElementById('nc_inscEstadual').value = c.inscEstadual || '';
+  document.getElementById('nc_comprador').value = c.comprador || '';
+  document.getElementById('nc_endCobranca').value = c.endCobranca || '';
+  document.getElementById('nc_cidadeCobranca').value = c.cidadeCobranca || '';
+  document.getElementById('nc_ufCobranca').value = c.ufCobranca || '';
+  document.getElementById('nc_cepCobranca').value = c.cepCobranca || '';
+  document.getElementById('nc_telefoneCobranca').value = c.telefoneCobranca || '';
+  document.getElementById('nc_contatoCobranca').value = c.contatoCobranca || '';
+
+  document.getElementById('formNovoCliente').dataset.editarIndex = index;
+  new bootstrap.Modal(document.getElementById('modalNovoCliente')).show();
+}
+
+async function excluirCliente(index) {
+  if (!confirm('Tem certeza que deseja excluir este cliente?')) return;
+  try {
+    const res = await fetch(`salvar_cliente.php?acao=excluir&id=${index}`, { method: 'GET' });
+    const json = await res.json();
+    if (json.status === 'sucesso') {
+      carregarClientes();
+    } else {
+      alert('Erro: ' + json.mensagem);
+    }
+  } catch (err) {
+    console.error(err);
+    alert('Erro ao excluir cliente.');
+  }
+}
+
+carregarClientes();
+carregarProdutos();
+document.getElementById('prazoOpcao').addEventListener('change', atualizarValoresPorPrazo);
+document.getElementById('prazoOutro').addEventListener('input', atualizarValoresPorPrazo);
+
+function atualizarValoresPorPrazo() {
+  const prazoSelecionado = document.getElementById("prazoOpcao").value;
+  const multiplicador = calcularMultiplicadorPorPrazo(prazoSelecionado);
+
+  itens = itens.map(it => {
+    const precoBase = it.precoBase || it.preco / calcularMultiplicadorPorPrazoAnterior(); // fallback
+    const precoFinal = parseFloat((precoBase * multiplicador).toFixed(2));
+    const total = parseFloat((precoFinal * it.qtd).toFixed(2));
+    return {
+      ...it,
+      precoBase, // mantém o original para recalcular depois
+      preco: precoFinal,
+      total
+    };
+  });
+
+  atualizarTabela();
+}
+
+function calcularMultiplicadorPorPrazoAnterior() {
+  // usado como fallback se for necessário descobrir o multiplicador anterior
+  const prazo = "À vista";
+  return calcularMultiplicadorPorPrazo(prazo);
+}
+
+  </script>
+  
+  <script>
+async function sincronizarDados() {
+  try {
+    const jaVerificado = sessionStorage.getItem('sincronizacaoVerificada');
+
+    const statusElement = document.createElement('div');
+    statusElement.style.position = 'fixed';
+    statusElement.style.bottom = '10px';
+    statusElement.style.right = '10px';
+    statusElement.style.padding = '8px 15px';
+    statusElement.style.backgroundColor = 'rgba(0,0,0,0.7)';
+    statusElement.style.color = '#fff';
+    statusElement.style.borderRadius = '5px';
+    statusElement.style.fontSize = '14px';
+    statusElement.style.zIndex = '9999';
+    statusElement.innerHTML = 'Verificando conectividade...';
+    document.body.appendChild(statusElement);
+
+    const response = await fetch('sincronizar_culturas.php');
+    const resultado = await response.json();
+
+    if (resultado.status === 'atualizado') {
+      setTimeout(() => location.reload(), 500);
+      statusElement.innerHTML = '<i class="bi bi-check-circle-fill"></i> Conectado ao servidor. Catálogo atualizado!';
+      statusElement.style.backgroundColor = '#28a745';
+    } else if (resultado.status === 'atual') {
+      statusElement.innerHTML = '<i class="bi bi-check-circle-fill"></i> Catálogo já está atualizado.';
+      statusElement.style.backgroundColor = '#17a2b8';
+    } else if (resultado.status === 'offline') {
+      statusElement.innerHTML = '<i class="bi bi-wifi-off"></i> ' + resultado.mensagem;
+      statusElement.style.backgroundColor = '#ffc107';
+    } else {
+      statusElement.innerHTML = '<i class="bi bi-exclamation-triangle-fill"></i> ' + resultado.mensagem;
+      statusElement.style.backgroundColor = '#dc3545';
+    }
+
+    if (!jaVerificado) sessionStorage.setItem('sincronizacaoVerificada', 'true');
+
+    const tempoExibicao = jaVerificado ? 2000 : 4000;
+    setTimeout(() => {
+      statusElement.style.opacity = '0';
+      statusElement.style.transition = 'opacity 0.5s';
+      setTimeout(() => document.body.removeChild(statusElement), 500);
+    }, tempoExibicao);
+
+    return true;
+  } catch (error) {
+    console.error('Erro ao sincronizar dados:', error);
+    const statusElement = document.createElement('div');
+    statusElement.style.position = 'fixed';
+    statusElement.style.bottom = '10px';
+    statusElement.style.right = '10px';
+    statusElement.style.padding = '8px 15px';
+    statusElement.style.backgroundColor = '#dc3545';
+    statusElement.style.color = '#fff';
+    statusElement.style.borderRadius = '5px';
+    statusElement.style.fontSize = '14px';
+    statusElement.style.zIndex = '9999';
+    statusElement.innerHTML = '<i class="bi bi-exclamation-triangle-fill"></i> Erro ao verificar conectividade';
+    document.body.appendChild(statusElement);
+
+    setTimeout(() => {
+      statusElement.style.opacity = '0';
+      statusElement.style.transition = 'opacity 0.5s';
+      setTimeout(() => document.body.removeChild(statusElement), 500);
+    }, 3000);
+
+    return false;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  sincronizarDados();
+});
+</script>
+</body>
+</html>

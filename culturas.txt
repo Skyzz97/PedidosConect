@@ -1,0 +1,198 @@
+Cultura: Fertilizantes
+  Variedade: Conect Block 1L
+  Código: 2040901
+    Características: Fertilizante desenvolvido para fornecer equilíbrio nutricional ao solo e às plantas, potencializando o desenvolvimento radicular.
+    Resistências: Nenhuma
+    Período de Plantio: Cultura: Grãos, Dosagem: 2 a 4L/Hectare, Época: Pré-plantio ou cobertura.
+    Empresa: Conect Soluções
+    Imagem Principal: images/conect-block-icon.png
+    Outras Imagens:
+
+  Variedade: Conect Block 5L
+  Código: 2040905
+    Características: Fertilizante desenvolvido para fornecer equilíbrio nutricional ao solo e às plantas, potencializando o desenvolvimento radicular.
+    Resistências: Nenhuma
+    Período de Plantio: Cultura: Grãos, Dosagem: 2 a 4L/Hectare, Época: Pré-plantio ou cobertura.
+    Empresa: Conect Soluções
+    Imagem Principal: images/conect-block-icon.png
+    Outras Imagens:
+
+  Variedade: Conect Boro 1L
+  Código: 1010101
+    Características: Essencial para a saúde e produtividade das suas plantas! O Conect Boro melhora a floração, frutificação e o transporte de açúcares.
+    Resistências: Nenhuma
+    Período de Plantio: Cultura: Café, Dosagem Solo: 0,5 a 1,0L, Dosagem Foliar: 100 a 200 ml / 100L água, Época: Pré-florada ou fase vegetativa.
+    Empresa: Conect Soluções
+    Imagem Principal: images/conect-boro-icon.png
+    Outras Imagens:
+
+  Variedade: Conect Boro 5L
+  Código: 1010105
+    Características: Essencial para a saúde e produtividade das suas plantas! O Conect Boro melhora a floração, frutificação e o transporte de açúcares.
+    Resistências: Nenhuma
+    Período de Plantio: Cultura: Café, Dosagem Solo: 0,5 a 1,0L, Dosagem Foliar: 100 a 200 ml / 100L água, Época: Pré-florada ou fase vegetativa.
+    Empresa: Conect Soluções
+    Imagem Principal: images/conect-boro-icon.png
+    Outras Imagens:
+
+  Variedade: Conect Cálcio 17 1L
+  Código: 1010201
+    Características: Fertilizante com alto teor de cálcio, ideal para correção de deficiência e fortalecimento estrutural das plantas.
+    Resistências: Nenhuma
+    Período de Plantio: Cultura: Frutíferas, Dosagem: 10 a 20L/Hectare, Época: Ciclo vegetativo.
+    Empresa: Conect Soluções
+    Imagem Principal: images/conect-calcio17-icon.png
+    Outras Imagens:
+
+  Variedade: Conect Cálcio 17 5L
+  Código: 1010205
+    Características: Fertilizante com alto teor de cálcio, ideal para correção de deficiência e fortalecimento estrutural das plantas.
+    Resistências: Nenhuma
+    Período de Plantio: Cultura: Frutíferas, Dosagem: 10 a 20L/Hectare, Época: Ciclo vegetativo.
+    Empresa: Conect Soluções
+    Imagem Principal: images/conect-calcio17-icon.png
+    Outras Imagens:
+
+  Variedade: Conect Cálcio 25 1L
+  Código: 1010301
+    Características: A solução ideal para suprir a necessidade de cálcio das suas plantas! Com fórmula equilibrada, promove firmeza e crescimento saudável.
+    Resistências: Nenhuma
+    Período de Plantio: Cultura: Hortaliças, Dosagem: 10 a 15L/Hectare, Época: Preparo do solo ou manutenção.
+    Empresa: Conect Soluções
+    Imagem Principal: images/conect-calcio25-icon.png
+    Outras Imagens:
+
+  Variedade: Conect Cálcio 25 5L
+  Código: 1010305
+    Características: A solução ideal para suprir a necessidade de cálcio das suas plantas! Com fórmula equilibrada, promove firmeza e crescimento saudável.
+    Resistências: Nenhuma
+    Período de Plantio: Cultura: Hortaliças, Dosagem: 10 a 15L/Hectare, Época: Preparo do solo ou manutenção.
+    Empresa: Conect Soluções
+    Imagem Principal: images/conect-calcio25-icon.png
+    Outras Imagens:
+
+  Variedade: Conect Cálcio Pro 2kg
+  Código: 1010492
+    Características: Fórmula concentrada em cálcio para culturas exigentes. Indicado para aplicação via solo com alta solubilidade.
+    Resistências: Nenhuma
+    Período de Plantio: Cultura: HF e frutíferas, Dosagem: 3 a 5kg/hectare, Época: Pré-plantio.
+    Empresa: Conect Soluções
+    Imagem Principal: images/conect-calcio-pro-icon.png
+    Outras Imagens:
+
+  Variedade: Conect Cálcio Pro 5kg
+  Código: 1010495
+    Características: Fórmula concentrada em cálcio para culturas exigentes. Indicado para aplicação via solo com alta solubilidade.
+    Resistências: Nenhuma
+    Período de Plantio: Cultura: HF e frutíferas, Dosagem: 3 a 5kg/hectare, Época: Pré-plantio.
+    Empresa: Conect Soluções
+    Imagem Principal: images/conect-calcio-pro-icon.png
+    Outras Imagens:
+
+  Variedade: Conect Limpa Irrigação 1L
+  Código: 2061101
+    Características: A solução ideal para a limpeza de tanque e bicos de pulverização! Clean foi desenvolvido para máxima desincrustação.
+    Resistências: Nenhuma
+    Período de Plantio: Aplicação: Desincrustação de sucos, Diluição: 1 litro para 200 litros de água.
+    Empresa: Conect Soluções
+    Imagem Principal: images/conect-clean-icon.png
+    Outras Imagens:
+
+  Variedade: Conect Limpa Irrigação 5L
+  Código: 2061105
+    Características: A solução ideal para a limpeza de tanque e bicos de pulverização! Clean foi desenvolvido para máxima desincrustação.
+    Resistências: Nenhuma
+    Período de Plantio: Aplicação: Desincrustação de sucos, Diluição: 1 litro para 200 litros de água.
+    Empresa: Conect Soluções
+    Imagem Principal: images/conect-clean-icon.png
+    Outras Imagens:
+
+  Variedade: Conect Cristal Top 1L
+  Código: 2030701
+    Características: Fórmula rica em nutrientes que proporciona cristalinidade e uniformidade visual às folhas, com efeito bioativador.
+    Resistências: Nenhuma
+    Período de Plantio: Cultura: HF e folhosas, Dosagem: 1L/hectare, Época: Fase vegetativa.
+    Empresa: Conect Soluções
+    Imagem Principal: images/conect-cristal-top-icon.png
+    Outras Imagens:
+
+  Variedade: Conect Cristal Top 5L
+  Código: 2030705
+    Características: Fórmula rica em nutrientes que proporciona cristalinidade e uniformidade visual às folhas, com efeito bioativador.
+    Resistências: Nenhuma
+    Período de Plantio: Cultura: HF e folhosas, Dosagem: 1L/hectare, Época: Fase vegetativa.
+    Empresa: Conect Soluções
+    Imagem Principal: images/conect-cristal-top-icon.png
+    Outras Imagens:
+
+  Variedade: Conect Flavos 1L
+  Código: 2040801
+    Características: Bioestimulante natural que favorece o crescimento, floração e produtividade das culturas.
+    Resistências: Nenhuma
+    Período de Plantio: Cultura: Todas, Dosagem: 1 a 2L/hectare, Época: Qualquer estágio da cultura.
+    Empresa: Conect Soluções
+    Imagem Principal: images/conect-flavos-icon.png
+    Outras Imagens:
+
+  Variedade: Conect Flavos 5L
+  Código: 2040805
+    Características: Bioestimulante natural que favorece o crescimento, floração e produtividade das culturas.
+    Resistências: Nenhuma
+    Período de Plantio: Cultura: Todas, Dosagem: 1 a 2L/hectare, Época: Qualquer estágio da cultura.
+    Empresa: Conect Soluções
+    Imagem Principal: images/conect-flavos-icon.png
+    Outras Imagens:
+
+  Variedade: Conect Humic 1kg
+  Código: 1020591
+    Características: Fertilizante à base de ácidos húmicos que melhora a estrutura do solo e a retenção de nutrientes.
+    Resistências: Nenhuma
+    Período de Plantio: Solo: Arenoso ou pobre em matéria orgânica, Dosagem: 2 a 4kg/hectare.
+    Empresa: Conect Soluções
+    Imagem Principal: images/conect-humic-icon.png
+    Outras Imagens:
+
+  Variedade: Conect Humic 5kg
+  Código: 1020595
+    Características: Fertilizante à base de ácidos húmicos que melhora a estrutura do solo e a retenção de nutrientes.
+    Resistências: Nenhuma
+    Período de Plantio: Solo: Arenoso ou pobre em matéria orgânica, Dosagem: 2 a 4kg/hectare.
+    Empresa: Conect Soluções
+    Imagem Principal: images/conect-humic-icon.png
+    Outras Imagens:
+
+  Variedade: Conect Impacto 1L
+  Código: 2030601
+    Características: Fertilizante completo para fornecer energia metabólica em momentos críticos da lavoura.
+    Resistências: Nenhuma
+    Período de Plantio: Cultura: HF, frutíferas e cereais, Dosagem: 1 a 2L/hectare, Época: Início de crescimento.
+    Empresa: Conect Soluções
+    Imagem Principal: images/conect-impacto-icon.png
+    Outras Imagens:
+
+  Variedade: Conect Impacto 5L
+  Código: 2030605
+    Características: Fertilizante completo para fornecer energia metabólica em momentos críticos da lavoura.
+    Resistências: Nenhuma
+    Período de Plantio: Cultura: HF, frutíferas e cereais, Dosagem: 1 a 2L/hectare, Época: Início de crescimento.
+    Empresa: Conect Soluções
+    Imagem Principal: images/conect-impacto-icon.png
+    Outras Imagens:
+
+  Variedade: Conect Spider 1L
+  Código: 2051001
+    Características: Solução técnica inovadora que atua no metabolismo vegetal e ativa mecanismos de defesa.
+    Resistências: Nenhuma
+    Período de Plantio: Cultura: Todas, Dosagem: 0,5 a 1L/hectare, Época: Fase de estresse ou desenvolvimento.
+    Empresa: Conect Soluções
+    Imagem Principal: images/conect-spider-icon.png
+    Outras Imagens:
+
+  Variedade: Conect Spider 5L
+  Código: 2051005
+    Características: Solução técnica inovadora que atua no metabolismo vegetal e ativa mecanismos de defesa.
+    Resistências: Nenhuma
+    Período de Plantio: Cultura: Todas, Dosagem: 0,5 a 1L/hectare, Época: Fase de estresse ou desenvolvimento.
+    Empresa: Conect Soluções
+    Imagem Principal: images/conect-spider-icon.png
+    Outras Imagens:

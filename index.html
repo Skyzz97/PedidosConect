@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Pedidos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #4999F6;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+	body { font-family: 'Montserrat', sans-serif; background-color: #4999F6; color: #fff; margin: 0; padding: 0; }
+    .navbar { background-color: #07417d; padding: 1rem 1rem; border-bottom: 0.2px solid #333; }
+    .navbar-brand { font-size: 1.5rem; font-weight: bold; color: #fff !important; text-decoration: none !important; }
+    .sidebar { height: 100%; width: 250px; position: fixed; top: 0; left: -250px; background-color: #051A32; transition: 0.5s; padding-top: 60px; z-index:1000; }
+    .sidebar a { padding:10px 15px; text-decoration:none; color:#fff; display:block; }
+    .sidebar a:hover { background-color:#333; }
+    .sidebar .closebtn { position:absolute; top:0; right:25px; font-size:2rem; }
+    .menu-icon { position:fixed; top:20px; left:20px; font-size:2rem; color:#fff; cursor:pointer; z-index:1001; }
+    .form-container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background-color: #16375D;
+      border-radius: 10px;
+    }
+	
+    .btn-primary {
+      background-color: #2C72B7;
+      border: none;
+    }
+    .btn-primary:hover {
+      background-color: #1b4f83;
+    }
+    .tabela-pedidos {
+  border-radius: 8px;
+  overflow: hidden;
+}
+.tabela-pedidos th {
+  background-color: #0d274d;
+  color: #fff;
+}
+.tabela-pedidos td {
+  background-color: #FFFFF;
+  color: #000000 ;;
+  vertical-align: middle;
+}
+
+    .details-box {
+      background-color: #0d274d;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1.5rem;
+    }
+    .details-box p {
+      margin: 0.3rem 0;
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="catalogo.html">
+        <img src="images/logo.png" alt="Logo" style="width:110px;"/> Emissão de Pedido
+      </a>
+    </div>
+  </nav>
+
+  <div id="sidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="fecharMenu()">&times;</a>
+    <a href="index.html"><i class="bi bi-house"></i> Página Inicial</a>
+  
+    <a href="sobre.html"><i class="bi bi-info-circle"></i> Sobre</a>
+  </div>
+  <div class="menu-icon" onclick="abrirMenu()"><i class="bi bi-list"></i></div>
+  <div class="form-container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>Pedidos Emitidos</h2>
+      <a href="pedidos.html" class="btn btn-success"><i class="bi bi-plus-lg"></i> Novo Pedido</a>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table tabela-pedidos">
+        <thead>
+          <tr>
+            <th>Nº Pedido</th>
+            <th>Cliente</th>
+            <th>Total</th>
+            <th>Ação</th>
+          </tr>
+        </thead>
+        <tbody id="listaPedidos">
+          <!-- preenchido por JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <div id="detalhesPedido" class="details-box d-none">
+      <h5 class="mb-3">Detalhes do Pedido</h5>
+      <div id="conteudoDetalhes"></div>
+      <button class="btn btn-light mt-3" onclick="fecharDetalhes()">Fechar</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+   function abrirMenu(){document.getElementById('sidebar').style.left='0';}
+    function fecharMenu(){document.getElementById('sidebar').style.left='-250px';}
+    const lista = document.getElementById('listaPedidos');
+    const detalhes = document.getElementById('detalhesPedido');
+    const conteudo = document.getElementById('conteudoDetalhes');
+
+    fetch('listar_pedidos.php')
+      .then(res => res.json())
+      .then(pedidos => {
+        if (!pedidos.length) {
+          lista.innerHTML = '<tr><td colspan="4" class="text-center text-white">Nenhum pedido encontrado.</td></tr>';
+          return;
+        }
+
+        pedidos.forEach((p, i) => {
+          const total = p.itens.reduce((soma, it) => soma + (parseFloat(it.preco) * parseFloat(it.qtd)), 0);
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${p.numero || '-'}</td>
+            <td>${p.cliente?.nome || '-'}</td>
+            <td>R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
+            <td><button class="btn btn-sm btn-light" onclick='verDetalhes(${i})'>Ver detalhes</button></td>
+          `;
+          lista.appendChild(tr);
+        });
+
+        window.verDetalhes = function(i) {
+          const p = pedidos[i];
+          const total = p.itens.reduce((soma, it) => soma + (parseFloat(it.preco) * parseFloat(it.qtd)), 0);
+
+          conteudo.innerHTML = `
+            <p><strong>Número:</strong> ${p.numero}</p>
+            <p><strong>Cliente:</strong> ${p.cliente?.nome}</p>
+            <p><strong>Endereço:</strong> ${p.cliente?.endereco}, ${p.cliente?.cidade} - ${p.cliente?.uf}</p>
+            <p><strong>Telefone:</strong> ${p.cliente?.telefone}</p>
+            <p><strong>Email:</strong> ${p.cliente?.email}</p>
+            <p><strong>Transportadora:</strong> ${p.transportadora || '-'}</p>
+            <p><strong>Frete:</strong> ${p.frete}</p>
+            <p><strong>Condições de Pagamento:</strong> ${p.condicoes}</p>
+            <p><strong>Observações:</strong> ${p.observacoes || '-'}</p>
+            <hr>
+            <h6>Itens</h6>
+            <ul>
+              ${p.itens.map(it => `<li>${it.qtd}x ${it.nome} - R$ ${parseFloat(it.preco).toFixed(2)}</li>`).join('')}
+            </ul>
+            <p><strong>Total:</strong> R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
+          `;
+          detalhes.classList.remove('d-none');
+          detalhes.scrollIntoView({ behavior: 'smooth' });
+        };
+      })
+      .catch(err => {
+        lista.innerHTML = `<tr><td colspan="4" class="text-danger">Erro ao carregar pedidos.</td></tr>`;
+        console.error(err);
+      });
+
+    function fecharDetalhes() {
+      detalhes.classList.add('d-none');
+      conteudo.innerHTML = '';
+    }
+  </script>
+</body>
+</html>
