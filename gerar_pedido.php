@@ -25,7 +25,7 @@ $dataPedido = date('d/m/Y');
 
 $pdf = new tFPDF();
 $pdf->AddPage();
-$pdf->AddFont('DejaVu', '', 'DejaVuSans.ttf', true);
+$pdf->AddFont('DejaVu', '', 'DejaVuSans.php');
 $pdf->AddFont('DejaVu', 'B', 'DejaVuSans-Bold.ttf', true);
 $pdf->SetFont('DejaVu', '', 10);
 
