@@ -13,6 +13,9 @@ $desc = array(
 );
 $up = -63;
 $ut = 44;
-$ttffile = __DIR__ . '/DejaVuSans.ttf';  // <----- ESSA LINHA É ESSENCIAL
+
+// 👇👇👇 ESSA É A LINHA MAIS IMPORTANTE
+$ttffile = __DIR__ . '/DejaVuSans.ttf';
+
 $originalsize = 757076;
 $fontkey = 'dejavu';
