@@ -22,4 +22,5 @@ $uv = array(0=>array(0,128),128=>8364,130=>8218,131=>402,132=>8222,133=>8230,134
 $file = 'DejaVuSans-Bold.z';
 $originalsize = 51128;
 $subsetted = true;
+$ttffile = '/var/www/html/tfpdf/font/unifont/DejaVuSans-Bold.ttf';
 ?>
