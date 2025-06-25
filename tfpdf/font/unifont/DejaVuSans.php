@@ -1,5 +1,4 @@
 <?php
-// FONTE: DejaVuSans.ttf
 $type = 'TrueTypeUnicode';
 $name = 'DejaVuSans';
 $desc = array(
@@ -14,10 +13,6 @@ $desc = array(
 );
 $up = -63;
 $ut = 44;
-$ttffile = __DIR__ . '/DejaVuSans.ttf'; // <- ESSE CAMINHO É FUNDAMENTAL
+$ttffile = __DIR__ . '/DejaVuSans.ttf';  // <----- ESSA LINHA É ESSENCIAL
 $originalsize = 757076;
 $fontkey = 'dejavu';
-$enc = '';
-$diff = '';
-$file = ''; // Se for embutido por PHP, deixa vazio
-$ctg = '';
