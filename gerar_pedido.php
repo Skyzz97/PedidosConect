@@ -1,8 +1,9 @@
 <?php
-
 if (ob_get_level()) {
     ob_clean();
 }
+
+chdir(__DIR__); // garante que caminhos relativos funcionem no Render
 
 require('tfpdf/tfpdf.php');
 
