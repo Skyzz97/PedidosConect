@@ -1,5 +1,6 @@
 <?php
-require('tfpdf/makefont/makefont.php');
+require(__DIR__ . '/../makefont.php');
+
 
 // Gera a fonte normal
 MakeFont('tfpdf/font/unifont/DejaVuSans.ttf', 'cp1252', true);
