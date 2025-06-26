@@ -5,6 +5,8 @@ RUN a2enmod rewrite
 
 # Copia todos os arquivos do projeto
 COPY . /var/www/html/
+RUN php /var/www/html/tfpdf/makefont/gerar_fontes.php
+
 
 # (Opcional) Adiciona .htaccess com prioridade de index.html
 RUN echo "DirectoryIndex index.html index.php" > /var/www/html/.htaccess
